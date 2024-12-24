@@ -3,4 +3,4 @@ from django.contrib.auth.models import AbstractUser
 # Create your models here.
 class CustomUser(AbstractUser):
     name = models.CharField(null=False,blank=False,max_length=255)
-    usable_password = models.BooleanField(default=True)
+    #usable_password = models.BooleanField(default=True)
