@@ -31,22 +31,39 @@ AUTH_USER_MODEL = "accounts.CustomUser"
 # Application definition
 
 INSTALLED_APPS = [
+    #Django APPS
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    #Local Apps
     'accounts.apps.AccountsConfig',
-    'corsheaders',
     'posts.apps.PostsConfig',
+
+    # Third Party APPS
+    'corsheaders',
+    'rest_framework.authtoken',
+    'allauth', 
+    'allauth.account', 
+    'allauth.socialaccount', 
+    'dj_rest_auth',
+    'dj_rest_auth.registration',    
     'rest_framework',
 ]
-REST_FRAMEWORK = { # new
-    "DEFAULT_PERMISSION_CLASSES": [
-            "rest_framework.permissions.AllowAny",
+REST_FRAMEWORK = {
+"DEFAULT_PERMISSION_CLASSES": [
+"rest_framework.permissions.IsAuthenticated",
+],
+"DEFAULT_AUTHENTICATION_CLASSES": [ # new
+"rest_framework.authentication.SessionAuthentication",
+"rest_framework.authentication.TokenAuthentication",
 ],
 }
+ 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -56,6 +73,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 
@@ -66,11 +84,7 @@ CORS_ORIGIN_WHITELIST = (
 
 ROOT_URLCONF = 'django_project.urls'
 
-REST_FRAMEWORK = {
-"DEFAULT_PERMISSION_CLASSES": [
-"rest_framework.permissions.IsAuthenticatedOrReadOnly", # new
-],
-}
+
 
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 TEMPLATES = [
@@ -84,6 +98,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -143,3 +158,6 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend" # new
+SITE_ID = 1 # new
